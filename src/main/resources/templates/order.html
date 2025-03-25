@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaFlow - Place Order</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Water-themed background */
+        body {
+            background: linear-gradient(135deg, #e6f3ff 0%, #b3d9ff 100%);
+            min-height: 100vh;
+        }
+
+        /* Water drop animation */
+        @keyframes waterDrop {
+            0% { transform: translateY(-20px); opacity: 0; }
+            50% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        .water-drop {
+            animation: waterDrop 3s infinite ease-in-out;
+            position: absolute;
+        }
+
+        /* Form animation */
+        .form-container {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input focus animation */
+        input:focus, textarea:focus {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="relative flex items-center justify-center min-h-screen">
+<!-- Water drop decorations -->
+<div class="water-drop text-blue-400 text-2xl" style="left: 5%; top: 10%; animation-delay: 0s;">💧</div>
+<div class="water-drop text-blue-300 text-3xl" style="right: 10%; top: 20%; animation-delay: 1s;">💧</div>
+<div class="water-drop text-blue-200 text-xl" style="left: 15%; bottom: 15%; animation-delay: 2s;">💧</div>
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-sm shadow-lg fixed w-full z-20 top-0">
+    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <div class="flex items-center">
+            <i class="fas fa-tint text-blue-600 text-3xl mr-2"></i>
+            <h1 class="text-2xl font-bold text-blue-800">AquaFlow</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="infoPopupBtn" class="text-blue-600 hover:text-blue-800 transition">
+                <i class="fas fa-info-circle text-xl"></i>
+            </button>
+            <a href="/customer-dashboard" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition transform hover:scale-105">
+                <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-20 pt-28 relative z-10 flex items-center justify-center">
+    <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg w-full max-w-md form-container">
+        <h2 class="text-3xl font-bold text-blue-800 mb-8 text-center">Place an Order</h2>
+
+        <!-- Form -->
+        <form action="/orders/addOrders" method="post" class="space-y-6">
+            <!-- Supplier Selection -->
+            <div>
+                <label for="supplierId" class="block text-sm font-medium text-blue-700"><i class="fas fa-store mr-2"></i>Supplier</label>
+                <input type="hidden" name="supplierId" id="supplierId" th:value="${supplier.id}">
+                <input type="text" id="supplierName" th:value="${supplier.name}" readonly
+                       class="mt-1 block w-full p-3 border border-blue-200 rounded-lg bg-blue-50 cursor-not-allowed text-gray-700">
+            </div>
+
+            <!-- Water Type -->
+            <div>
+                <label for="waterType" class="block text-sm font-medium text-blue-700"><i class="fas fa-tint mr-2"></i>Water Type</label>
+                <input type="text" name="waterType" id="waterType" required
+                       class="mt-1 block w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent">
+            </div>
+
+            <!-- Quantity -->
+            <div>
+                <label for="quantity" class="block text-sm font-medium text-blue-700"><i class="fas fa-water mr-2"></i>Quantity (Litres)</label>
+                <input type="number" name="quantity" id="quantity" required min="1"
+                       class="mt-1 block w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent"
+                       oninput="calculateTotalPrice()">
+            </div>
+
+            <!-- Price per Litre -->
+            <div>
+                <label for="pricePerLitre" class="block text-sm font-medium text-blue-700"><i class="fas fa-tag mr-2"></i>Price per Litre (GHS₵)</label>
+                <input type="number" name="pricePerLitre" id="pricePerLitre" th:value="${supplier.pricing}" readonly
+                       class="mt-1 block w-full p-3 border border-blue-200 rounded-lg bg-blue-50 cursor-not-allowed text-gray-700">
+            </div>
+
+            <!-- Total Price -->
+            <div>
+                <label for="totalPrice" class="block text-sm font-medium text-blue-700"><i class="fas fa-money-bill mr-2"></i>Total Price (GHS₵)</label>
+                <input type="number" name="totalPrice" id="totalPrice" readonly
+                       class="mt-1 block w-full p-3 border border-blue-200 rounded-lg bg-blue-50 cursor-not-allowed text-gray-700">
+            </div>
+
+            <!-- Delivery Address -->
+            <div>
+                <label for="deliveryAddress" class="block text-sm font-medium text-blue-700"><i class="fas fa-map-marker-alt mr-2"></i>Delivery Address</label>
+                <textarea name="deliveryAddress" id="deliveryAddress" required rows="3"
+                          class="mt-1 block w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent"
+                          placeholder="Enter your delivery address"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition transform hover:scale-105">
+                    <i class="fas fa-shopping-cart mr-2"></i>Place Order
+                </button>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <p th:if="${message}" th:text="${message}" class="mt-6 text-center text-green-600 flex items-center justify-center">
+            <i class="fas fa-check-circle mr-2"></i><span th:text="${message}"></span>
+        </p>
+    </div>
+</div>
+
+<!-- Info Popup -->
+<div id="infoPopup" class="popup">
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Order Your Water</h2>
+    <p class="text-gray-700 mb-4">Fill in the details to place your order and get fresh water delivered to your doorstep!</p>
+    <button id="closePopup" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">Got it!</button>
+</div>
+
+<!-- JavaScript -->
+<script>
+        // Popup functionality
+        const popup = document.getElementById('infoPopup');
+        const popupBtn = document.getElementById('infoPopupBtn');
+        const closeBtn = document.getElementById('closePopup');
+
+        popupBtn.onclick = () => popup.style.display = 'block';
+        closeBtn.onclick = () => popup.style.display = 'none';
+        window.onclick = (e) => {
+            if (e.target === popup) popup.style.display = 'none';
+        };
+
+        // Auto-calculate total price
+        function calculateTotalPrice() {
+            const quantity = document.getElementById("quantity").value;
+            const pricePerLitre = document.getElementById("pricePerLitre").value;
+            const totalPriceField = document.getElementById("totalPrice");
+
+            if (quantity && pricePerLitre) {
+                totalPriceField.value = (quantity * pricePerLitre).toFixed(2);
+            } else {
+                totalPriceField.value = "";
+            }
+        }
+    </script>
+</body>
+</html>

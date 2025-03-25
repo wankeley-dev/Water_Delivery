@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaFlow - Supplier Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Water-themed background */
+        body {
+            background: linear-gradient(135deg, #e6f3ff 0%, #b3d9ff 100%);
+            min-height: 100vh;
+        }
+
+        /* Water drop animation */
+        @keyframes waterDrop {
+            0% { transform: translateY(-20px); opacity: 0; }
+            50% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        .water-drop {
+            animation: waterDrop 3s infinite ease-in-out;
+            position: absolute;
+        }
+
+        /* Table container */
+        .table-container {
+            transition: box-shadow 0.3s ease;
+        }
+        .table-container:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive table */
+        @media (max-width: 640px) {
+            .table-container {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            th, td {
+                white-space: nowrap;
+            }
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="relative">
+<!-- Water drop decorations -->
+<div class="water-drop text-blue-400 text-2xl" style="left: 5%; top: 15%; animation-delay: 0s;">💧</div>
+<div class="water-drop text-blue-300 text-3xl" style="right: 10%; top: 25%; animation-delay: 1s;">💧</div>
+<div class="water-drop text-blue-200 text-xl" style="left: 15%; bottom: 20%; animation-delay: 2s;">💧</div>
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-sm shadow-lg fixed w-full z-20">
+    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <div class="flex items-center">
+            <i class="fas fa-tint text-blue-600 text-3xl mr-2"></i>
+            <h1 class="text-2xl font-bold text-blue-800">AquaFlow</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="infoPopupBtn" class="text-blue-600 hover:text-blue-800 transition">
+                <i class="fas fa-info-circle text-xl"></i>
+            </button>
+            <a href="/supplier-dashboard" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition transform hover:scale-105">
+                <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-20 pt-28 relative z-10">
+    <h1 class="text-4xl font-bold text-blue-800 mb-8 text-center">All Orders</h1>
+
+    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden table-container">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-blue-100">
+                <tr>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-users mr-2"></i>Customer</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-calendar mr-2"></i>Order Date</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-tint mr-2"></i>Water Type</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-water mr-2"></i>Quantity (L)</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-tag mr-2"></i>Price/Litre</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-money-bill mr-2"></i>Total Price</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-map-marker-alt mr-2"></i>Delivery Address</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-info-circle mr-2"></i>Status</th>
+                    <th class="p-4 text-left text-sm font-semibold text-blue-700"><i class="fas fa-cogs mr-2"></i>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}" class="hover:bg-blue-50 transition-colors duration-200">
+                    <!-- Customer -->
+                    <td class="p-4 text-sm text-gray-700" th:text="${order.consumer.fullName}"></td>
+
+                    <!-- Order Date -->
+                    <td class="p-4 text-sm text-gray-700" th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}"></td>
+
+                    <!-- Water Type -->
+                    <td class="p-4 text-sm text-gray-700" th:text="${order.waterType}"></td>
+
+                    <!-- Quantity -->
+                    <td class="p-4 text-sm text-gray-700" th:text="${order.quantity}"></td>
+
+                    <!-- Price per Litre -->
+                    <td class="p-4 text-sm text-gray-700" th:text="'₵' + ${order.pricePerLitre}"></td>
+
+                    <!-- Total Price -->
+                    <td class="p-4 text-sm text-gray-700" th:text="'₵' + ${order.totalPrice}"></td>
+
+                    <!-- Delivery Address -->
+                    <td class="p-4 text-sm text-gray-700" th:text="${order.deliveryAddress}"></td>
+
+                    <!-- Status -->
+                    <td class="p-4 text-sm text-gray-700">
+                                <span class="px-3 py-1 text-sm font-semibold rounded-full"
+                                      th:classappend="${order.orderStatus == 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}"
+                                      th:text="${order.orderStatus}"></span>
+                    </td>
+
+                    <!-- Action -->
+                    <td class="p-4 text-sm text-gray-700">
+                        <form th:action="@{/orders/update-status/{id}(id=${order.id})}" method="post" class="inline">
+                            <input type="hidden" name="orderStatus" th:value="${order.orderStatus.name() == 'PENDING' ? 'DELIVERED' : 'PENDING'}"/>
+                            <input type="hidden" name="supplierId" th:value="${order.supplier.id}"/>
+                            <button type="submit"
+                                    class="px-4 py-2 text-sm font-semibold text-white rounded-full transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    th:disabled="${order.orderStatus.name() == 'DELIVERED'}"
+                                    th:text="${order.orderStatus.name() == 'PENDING' ? 'Mark as Delivered' : 'Delivered'}"
+                                    th:classappend="${order.orderStatus.name() == 'DELIVERED' ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Info Popup -->
+<div id="infoPopup" class="popup">
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Manage Your Orders</h2>
+    <p class="text-gray-700 mb-4">View and update the status of all orders placed with your business. Mark orders as delivered when completed!</p>
+    <button id="closePopup" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">Got it!</button>
+</div>
+
+<script>
+        // Popup functionality
+        const popup = document.getElementById('infoPopup');
+        const popupBtn = document.getElementById('infoPopupBtn');
+        const closeBtn = document.getElementById('closePopup');
+
+        popupBtn.onclick = () => popup.style.display = 'block';
+        closeBtn.onclick = () => popup.style.display = 'none';
+        window.onclick = (e) => {
+            if (e.target === popup) popup.style.display = 'none';
+        };
+    </script>
+</body>
+</html>

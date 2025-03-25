@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaFlow - Submit Review</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Water-themed background */
+        body {
+            background: linear-gradient(135deg, #e6f3ff 0%, #b3d9ff 100%);
+            min-height: 100vh;
+        }
+
+        /* Water drop animation */
+        @keyframes waterDrop {
+            0% { transform: translateY(-20px); opacity: 0; }
+            50% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        .water-drop {
+            animation: waterDrop 3s infinite ease-in-out;
+            position: absolute;
+        }
+
+        /* Form animation */
+        .form-container {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input focus animation */
+        input:focus, select:focus, textarea:focus {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="relative">
+<!-- Water drop decorations -->
+<div class="water-drop text-blue-400 text-2xl" style="left: 5%; top: 10%; animation-delay: 0s;">💧</div>
+<div class="water-drop text-blue-300 text-3xl" style="right: 10%; top: 20%; animation-delay: 1s;">💧</div>
+<div class="water-drop text-blue-200 text-xl" style="left: 15%; bottom: 15%; animation-delay: 2s;">💧</div>
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-sm shadow-lg fixed w-full z-20">
+    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+        <div class="flex items-center">
+            <i class="fas fa-tint text-blue-600 text-3xl mr-2"></i>
+            <h1 class="text-2xl font-bold text-blue-800">AquaFlow</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="infoPopupBtn" class="text-blue-600 hover:text-blue-800 transition">
+                <i class="fas fa-info-circle text-xl"></i>
+            </button>
+            <a href="/customer-dashboard" class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition transform hover:scale-105">
+                <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-20 pt-28 relative z-10">
+    <!-- Page Title -->
+    <h2 class="text-4xl font-bold text-blue-800 mb-10 text-center">Submit a Review</h2>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${param.success}" class="mb-6 p-4 text-green-700 bg-green-100 rounded-xl shadow-md flex items-center">
+        <i class="fas fa-check-circle mr-2"></i>Review submitted successfully!
+    </div>
+    <div th:if="${param.error}" class="mb-6 p-4 text-red-700 bg-red-100 rounded-xl shadow-md flex items-center">
+        <i class="fas fa-exclamation-circle mr-2"></i>Error: Unable to submit review.
+    </div>
+
+    <!-- Review Form -->
+    <form action="/addReview" method="post" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 max-w-2xl mx-auto form-container">
+        <!-- Supplier Dropdown -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-blue-700 mb-2"><i class="fas fa-store mr-2"></i>Supplier</label>
+            <select name="supplierId" required
+                    class="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent">
+                <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}"></option>
+            </select>
+        </div>
+
+        <!-- Rating Input -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-blue-700 mb-2"><i class="fas fa-star mr-2"></i>Rating (1-5)</label>
+            <input type="number" name="rating" min="1" max="5" required
+                   class="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent">
+        </div>
+
+        <!-- Comment Textarea -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-blue-700 mb-2"><i class="fas fa-comment mr-2"></i>Comment</label>
+            <textarea name="content" rows="4" required
+                      class="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-transparent"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition transform hover:scale-105">
+                <i class="fas fa-paper-plane mr-2"></i>Submit Review
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Info Popup -->
+<div id="infoPopup" class="popup">
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Review Your Experience</h2>
+    <p class="text-gray-700 mb-4">Share your feedback to help others find the best water suppliers!</p>
+    <button id="closePopup" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">Got it!</button>
+</div>
+
+<script>
+        // Popup functionality
+        const popup = document.getElementById('infoPopup');
+        const popupBtn = document.getElementById('infoPopupBtn');
+        const closeBtn = document.getElementById('closePopup');
+
+        popupBtn.onclick = () => popup.style.display = 'block';
+        closeBtn.onclick = () => popup.style.display = 'none';
+        window.onclick = (e) => {
+            if (e.target === popup) popup.style.display = 'none';
+        };
+    </script>
+</body>
+</html>

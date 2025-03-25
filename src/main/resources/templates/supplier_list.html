@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaFlow - Customer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+        /* Water-themed background */
+        body {
+            background: linear-gradient(135deg, #e6f3ff 0%, #b3d9ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Water drop animation */
+        @keyframes waterDrop {
+            0% { transform: translateY(-20px); opacity: 0; }
+            50% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(20px); opacity: 0; }
+        }
+
+        .water-drop {
+            animation: waterDrop 3s infinite ease-in-out;
+            position: absolute;
+        }
+
+        /* Card hover animation */
+        .supplier-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .supplier-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Search bar animation */
+        .search-bar:focus-within {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="relative">
+<!-- Water drop decorations -->
+<div class="water-drop text-blue-400 text-2xl" style="left: 5%; top: 15%; animation-delay: 0s;">💧</div>
+<div class="water-drop text-blue-300 text-3xl" style="right: 10%; top: 25%; animation-delay: 1s;">💧</div>
+<div class="water-drop text-blue-200 text-xl" style="left: 15%; bottom: 20%; animation-delay: 2s;">💧</div>
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-sm shadow-lg fixed w-full z-20">
+  <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+    <div class="flex items-center">
+      <i class="fas fa-tint text-blue-600 text-3xl mr-2"></i>
+      <h1 class="text-2xl font-bold text-blue-800">AquaFlow</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <button id="infoPopupBtn" class="text-blue-600 hover:text-blue-800 transition">
+        <i class="fas fa-info-circle text-xl"></i>
+      </button>
+      <a href="/customer-dashboard" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition transform hover:scale-105 text-sm md:px-6 md:text-base">
+        <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+      </a>
+      <a href="/reviews" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition transform hover:scale-105 text-sm md:px-6 md:text-base">
+        <i class="fas fa-star mr-2"></i>Leave a Review
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-20 relative z-10">
+  <!-- Search Form -->
+  <div class="mb-12 pt-10">
+    <form action="/suppliers" method="get" class="flex flex-col md:flex-row gap-4 search-bar bg-white/80 p-4 rounded-xl shadow-lg">
+      <input type="text" name="location" placeholder="Enter your location" required
+             class="flex-1 p-3 border border-blue-200 rounded-md focus:ring-blue-500 focus:border-blue-500 transition bg-transparent">
+      <button type="submit"
+              class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition transform hover:scale-105">
+        <i class="fas fa-search mr-2"></i>Search
+      </button>
+    </form>
+  </div>
+
+  <!-- Supplier List -->
+  <h2 class="text-3xl font-bold text-blue-800 mb-8 text-center">Available Water Suppliers</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-md overflow-hidden supplier-card" th:each="supplier : ${suppliers}">
+      <img th:src="@{${supplier.imagePath != null ? '/uploads/' + supplier.imagePath : '/uploads/default.jpg'}}"
+           alt="Supplier Image" class="w-full h-48 object-cover">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-blue-800" th:text="${supplier.name}"></h3>
+        <p class="text-gray-600 text-sm mt-2"><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i><span th:text="${supplier.location}"></span></p>
+        <p class="text-gray-600 text-sm"><i class="fas fa-tag text-blue-500 mr-2"></i>Price: <span th:text="${supplier.pricing}"></span></p>
+
+        <!-- Star Rating -->
+        <div class="mt-3 flex items-center text-yellow-500">
+                        <span th:each="star : ${#numbers.sequence(1, supplier.getAverageRating())}">
+                            <i class="fas fa-star"></i>
+                        </span>
+          <span th:if="${supplier.getAverageRating() < 5}" th:each="emptyStar : ${#numbers.sequence(supplier.getAverageRating()+1, 5)}">
+                            <i class="far fa-star"></i>
+                        </span>
+          <span class="ml-2 text-gray-600 text-sm" th:text="${supplier.getAverageRating()} + ' / 5'"></span>
+        </div>
+
+        <!-- Latest Review -->
+        <p class="text-gray-600 text-sm mt-3 italic" th:if="${supplier.latestReview}">
+          <i class="fas fa-comment text-blue-500 mr-2"></i>"<span th:text="${supplier.latestReview.content}"></span>"
+        </p>
+
+        <!-- Order Button -->
+        <a th:href="@{/orders/order(supplierId=${supplier.id})}"
+           class="mt-4 block text-center bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition transform hover:scale-105">
+          <i class="fas fa-shopping-cart mr-2"></i>Order Now
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Info Popup -->
+<div id="infoPopup" class="popup">
+  <h2 class="text-2xl font-bold text-blue-800 mb-4">Welcome to AquaFlow!</h2>
+  <p class="text-gray-700 mb-4">Find the best water suppliers near you. Search by location, check ratings, and order with ease!</p>
+  <button id="closePopup" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">Got it!</button>
+</div>
+
+<script>
+        // Popup functionality
+        const popup = document.getElementById('infoPopup');
+        const popupBtn = document.getElementById('infoPopupBtn');
+        const closeBtn = document.getElementById('closePopup');
+
+        popupBtn.onclick = () => popup.style.display = 'block';
+        closeBtn.onclick = () => popup.style.display = 'none';
+        window.onclick = (e) => {
+            if (e.target === popup) popup.style.display = 'none';
+        };
+    </script>
+</body>
+</html>
