@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56234bad-55f8-40e2-bde8-e3bbced39f15" name="Changes" comment="This is my first push of the scholarship portal to github" />
+    <list default="true" id="56234bad-55f8-40e2-bde8-e3bbced39f15" name="Changes" comment="This is my first push of the scholarship portal to github">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Supplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/SupplierRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/SupplierRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/CustomUserDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/SupplierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/SupplierService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-mysql.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-mysql.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-postgres.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-postgres.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/supplier_list.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,10 +81,17 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.example.Learn.LearnOne" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.Learn.WaterDeliveryApp" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn install" />
+      <command value="mvn  clean package-DskipTests" />
+      <command value="mvn  dependency:go-offline " />
+      <command value="mvn  clean package-DskipTest" />
+      <command value="mvn clean package -DskipTests" />
       <command value="mvn clean" />
     </option>
   </component>

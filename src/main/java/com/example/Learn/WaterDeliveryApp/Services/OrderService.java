@@ -23,9 +23,6 @@ public class OrderService {
     private final SupplierRepository supplierRepository;
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-
-
-
     @Transactional
     public void updateOrderStatus(Long id, OrderStatus newStatus) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
@@ -40,54 +37,50 @@ public class OrderService {
         }
     }
 
-
-    // Fetch orders for a specific consumer
+    @Transactional(readOnly = true)
     public List<Order> getCustomerOrders(Long consumerId) {
         return userRepository.findById(consumerId)
                 .map(orderRepository::findByConsumer)
                 .orElseThrow(() -> new RuntimeException("Consumer not found"));
     }
 
-    // Fetch orders for a specific supplier
+    @Transactional(readOnly = true)
     public List<Order> getSupplierOrders(Long supplierId) {
         return supplierRepository.findById(supplierId)
                 .map(orderRepository::findBySupplier)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
-    // Fetch pending deliveries for a supplier
+    @Transactional(readOnly = true)
     public List<Order> getPendingDeliveries(Long supplierId) {
         return supplierRepository.findById(supplierId)
                 .map(supplier -> orderRepository.findBySupplierAndOrderStatusNot(supplier, OrderStatus.DELIVERED))
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
-    // Place a new order with default status PENDING
+    @Transactional
     public Order placeOrder(Order order) {
-
         order.setOrderStatus(OrderStatus.PENDING);
 
         // Get supplier contact details
         Supplier supplier = order.getSupplier();
         String supplierPhoneNumber = supplier.getContactDetails();
 
-
         return orderRepository.save(order);
     }
 
-    // Fetch orders with total price >= given amount
+    @Transactional(readOnly = true)
     public List<Order> getOrdersByTotalPrice(Long totalPrice) {
         return orderRepository.findByTotalPriceGreaterThanEqual(totalPrice);
     }
 
-    // Count total orders for a supplier
+    @Transactional(readOnly = true)
     public int countSupplierOrders(Long supplierId) {
         return orderRepository.countBySupplierId(supplierId);
     }
 
-    // Count orders by supplier and status
+    @Transactional(readOnly = true)
     public int countOrdersByStatus(Long supplierId, OrderStatus status) {
         return orderRepository.countBySupplierIdAndOrderStatus(supplierId, status);
     }
-
 }

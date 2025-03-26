@@ -6,6 +6,7 @@ import com.example.Learn.WaterDeliveryApp.Repository.OrderRepository;
 import com.example.Learn.WaterDeliveryApp.Repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,30 +24,36 @@ public class SupplierService {
     private final ReviewRepository reviewRepository;
     private static final String UPLOAD_DIR = "uploads/supplier_images/";
 
+    @Transactional(readOnly = true)
     public List<Supplier> getSuppliersByLocation(String location) {
         return supplierRepository.findAll();
     }
 
     // Get total number of orders for a supplier
+    @Transactional(readOnly = true)
     public int getTotalOrders(Long supplierId) {
         return orderRepository.countBySupplierId(supplierId);
     }
 
     // Get pending deliveries for a supplier
+    @Transactional(readOnly = true)
     public int getPendingDeliveries(Long supplierId) {
         return orderRepository.countBySupplierIdAndOrderStatus(supplierId, OrderStatus.PENDING);
     }
 
     // Get recent reviews for a supplier
+    @Transactional(readOnly = true)
     public List<Review> getRecentReviews(Long supplierId) {
         return reviewRepository.findTop5BySupplierIdOrderByCreatedAtDesc(supplierId);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Supplier> getSupplierByUser(Users users) {
-        return supplierRepository.findByUser(users);
+        return supplierRepository.findByUsers(users);
     }
 
     // Update supplier profile
+    @Transactional
     public Supplier updateSupplierProfile(Supplier supplier1, Supplier supplier, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {

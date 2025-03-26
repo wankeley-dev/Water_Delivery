@@ -15,14 +15,16 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private Users users;  // ✅ Link Supplier with a User
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id", nullable = false, unique = true)
+    private Users users;
+
 
     private String name;
     private String location;
     private String contactDetails;
     private double pricing;
+
     private String imagePath; // ✅ Field for storing business image path
 
     @Lob

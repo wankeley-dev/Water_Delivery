@@ -101,8 +101,7 @@
   <h2 class="text-3xl font-bold text-blue-800 mb-8 text-center">Available Water Suppliers</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-md overflow-hidden supplier-card" th:each="supplier : ${suppliers}">
-      <img th:src="@{${supplier.imagePath != null ? '/uploads/' + supplier.imagePath : '/uploads/default.jpg'}}"
-           alt="Supplier Image" class="w-full h-48 object-cover">
+      <img th:src="${supplier.imagePath}" alt="Supplier Image" class="w-full h-48 object-cover">
       <div class="p-6">
         <h3 class="text-xl font-semibold text-blue-800" th:text="${supplier.name}"></h3>
         <p class="text-gray-600 text-sm mt-2"><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i><span th:text="${supplier.location}"></span></p>

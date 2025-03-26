@@ -9,6 +9,7 @@ import com.example.Learn.WaterDeliveryApp.Repository.UserRepository;
 import com.example.Learn.WaterDeliveryApp.Services.SupplierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +28,12 @@ public class CustomerController {
     private final UserRepository userRepository;
 
     @GetMapping("/customer-dashboard")
+    @Transactional(readOnly = true)
     public String showDashboard(@RequestParam(value = "location", required = false) String location, Model model) {
         List<Supplier> suppliers;
 
         if (location != null && !location.isEmpty()) {
-            suppliers = supplierRepository.findByLocationContainingIgnoreCase(location);
+            suppliers = supplierRepository.searchByLocation(location);
         } else {
             suppliers = supplierRepository.findAll();
         }
@@ -50,23 +52,22 @@ public class CustomerController {
         return "customer-dashboard"; // Returns customer-dashboard.html
     }
 
-
     @GetMapping("/suppliers")
+    @Transactional(readOnly = true)
     public String getSuppliers(@RequestParam(required = false) String location, Model model) {
         List<Supplier> suppliers = supplierService.getSuppliersByLocation(location);
         model.addAttribute("suppliers", suppliers);
         return "supplier_list"; // Returns supplier-listing.html
     }
 
-
     @GetMapping("/order-history")
+    @Transactional(readOnly = true)
     public String showOrderHistory() {
         return "order-history"; // Returns order-history.html
     }
 
-
-
     @GetMapping("/order/{id}")
+    @Transactional(readOnly = true)
     public String showOrderPage(@PathVariable Long id, Model model, Principal principal) {
         Optional<Supplier> supplier = supplierRepository.findById(id);
 
@@ -86,6 +87,4 @@ public class CustomerController {
             return "redirect:/customer-dashboard"; // Redirect if supplier not found
         }
     }
-
-
 }

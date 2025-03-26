@@ -8,6 +8,7 @@ import com.example.Learn.WaterDeliveryApp.Services.SupplierService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,7 @@ public class SupplierProfileController {
 
     // GET: Display Profile Form
     @GetMapping("/edit")
+    @Transactional(readOnly = true)
     public String showProfileForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -52,6 +54,7 @@ public class SupplierProfileController {
     }
 
     @PostMapping("/update")
+    @Transactional
     public String updateSupplierProfile(@ModelAttribute Supplier supplier,
                                         @RequestParam("image") MultipartFile imageFile,
                                         Principal principal,
@@ -62,7 +65,7 @@ public class SupplierProfileController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Get existing supplier by user
-        Supplier existingSupplier = supplierRepository.findByUser(users)
+        Supplier existingSupplier = supplierRepository.findByUsers(users)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         // Update supplier details

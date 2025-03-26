@@ -3,6 +3,8 @@ package com.example.Learn.WaterDeliveryApp.Controllers;
 import com.example.Learn.WaterDeliveryApp.Entity.Role;
 import com.example.Learn.WaterDeliveryApp.Entity.Users;
 import com.example.Learn.WaterDeliveryApp.Services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,6 +19,7 @@ import java.beans.PropertyEditorSupport;
 @Controller
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final UserService userService;
 
     public AuthController(UserService userService) {
@@ -33,10 +36,9 @@ public class AuthController {
         });
     }
 
-
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new Users());
+        model.addAttribute("users", new Users());
         model.addAttribute("roles", Role.values()); // Pass available roles to the view
         return "register";
     }
@@ -44,17 +46,21 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute Users users, RedirectAttributes redirectAttributes) {
         try {
-            System.out.println("Received User: " + users.getFullName() + ", " + users.getEmail());
+            logger.info("Received registration request for user: {} with email: {}", users.getFullName(), users.getEmail());
 
             // Ensure role is set (defaults to CUSTOMER if not provided)
             if (users.getRole() == null) {
                 users.setRole(Role.CUSTOMER);
+                logger.info("No role provided, defaulting to CUSTOMER");
             }
 
             userService.registerUser(users);
+            logger.info("User registration successful: {}", users.getEmail());
+
             redirectAttributes.addFlashAttribute("successMessage", "Registration successful! Please log in.");
             return "redirect:/login";
         } catch (RuntimeException e) {
+            logger.error("Registration failed for user: {} - Error: {}", users.getEmail(), e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Registration failed: " + e.getMessage());
             return "redirect:/register";
         }

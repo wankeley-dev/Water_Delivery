@@ -6,8 +6,8 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Runtime stage
-FROM eclipse-temurin:22-jdk-alpine
-COPY --from=build /app/target/WaterDeliveryApplication-0.0.1-SNAPSHOT.jar /WaterDeliveryApplication.jar
+# Runtime stage (Use OpenJDK 22 instead of Java 17)
+FROM openjdk:22
+COPY --from=build /app/target/*.jar /WaterDeliveryApplication.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/WaterDeliveryApplication.jar"]

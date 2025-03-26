@@ -22,7 +22,7 @@ public class Review {
     private Supplier supplier;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // ✅ Reference User instead of Consumer
+    @JoinColumn(name = "users_id", nullable = false) // ✅ Reference User instead of Consumer
     private Users users;
 
     private String content;
