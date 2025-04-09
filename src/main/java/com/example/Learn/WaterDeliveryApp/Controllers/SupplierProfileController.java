@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
@@ -28,8 +29,6 @@ public class SupplierProfileController {
     private final SupplierService supplierService;
     private final UserRepository userRepository;
     private final SupplierRepository supplierRepository;
-
-    // Updated upload directory (relative to project root)
     private static final String UPLOAD_DIR = "uploads/";
 
     public SupplierProfileController(SupplierService supplierService, UserRepository userRepository, SupplierRepository supplierRepository) {
@@ -38,7 +37,6 @@ public class SupplierProfileController {
         this.supplierRepository = supplierRepository;
     }
 
-    // GET: Display Profile Form
     @GetMapping("/edit")
     @Transactional(readOnly = true)
     public String showProfileForm(Model model) {
@@ -59,39 +57,31 @@ public class SupplierProfileController {
                                         @RequestParam("image") MultipartFile imageFile,
                                         Principal principal,
                                         RedirectAttributes redirectAttributes) {
-        // Get authenticated user
         String email = principal.getName();
         Users users = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Get existing supplier by user
         Supplier existingSupplier = supplierRepository.findByUsers(users)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
-        // Update supplier details
         existingSupplier.setName(supplier.getName());
         existingSupplier.setLocation(supplier.getLocation());
         existingSupplier.setContactDetails(supplier.getContactDetails());
         existingSupplier.setPricing(supplier.getPricing());
+        existingSupplier.setDeliveryRadiusKm(supplier.getDeliveryRadiusKm()); // ✅ New field
+        existingSupplier.setPromotionCode(supplier.getPromotionCode());
+        existingSupplier.setPromotionDiscount(supplier.getPromotionDiscount());
+        existingSupplier.setPromotionExpiry(supplier.getPromotionExpiry());
 
-        // Handle image upload (if a new image is provided)
         if (!imageFile.isEmpty()) {
             try {
-                // Ensure upload directory exists
                 Path uploadPath = Paths.get(UPLOAD_DIR);
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-
-                // Generate a unique file name
                 String fileExtension = imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf("."));
                 String newFileName = UUID.randomUUID() + fileExtension;
-
-                // Save file
                 Path filePath = uploadPath.resolve(newFileName);
                 Files.write(filePath, imageFile.getBytes());
-
-                // Save the image path in the database (relative path for display)
                 existingSupplier.setImagePath("/uploads/" + newFileName);
             } catch (IOException e) {
                 redirectAttributes.addFlashAttribute("error", "Failed to upload image.");
@@ -99,10 +89,44 @@ public class SupplierProfileController {
             }
         }
 
-        // Save updated supplier
         supplierRepository.save(existingSupplier);
-
         redirectAttributes.addFlashAttribute("success", "Profile updated successfully!");
+        return "redirect:/supplier-dashboard";
+    }
+
+    // ✅ New Endpoint: Toggle Availability
+    @PostMapping("/toggle-availability")
+    @Transactional
+    public String toggleAvailability(Principal principal, RedirectAttributes redirectAttributes) {
+        String email = principal.getName();
+        Users users = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Supplier supplier = supplierRepository.findByUsers(users)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        boolean newStatus = !supplier.isAvailable();
+        supplierService.toggleAvailability(supplier.getId(), newStatus);
+        redirectAttributes.addFlashAttribute("success", "Availability updated to " + (newStatus ? "Available" : "Unavailable"));
+        return "redirect:/supplier-dashboard";
+    }
+
+    // ✅ New Endpoint: Add Promotion
+    @PostMapping("/add-promotion")
+    @Transactional
+    public String addPromotion(@RequestParam("promotionCode") String promotionCode,
+                               @RequestParam("discount") double discount,
+                               @RequestParam("expiry") String expiry,
+                               Principal principal,
+                               RedirectAttributes redirectAttributes) {
+        String email = principal.getName();
+        Users users = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Supplier supplier = supplierRepository.findByUsers(users)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        LocalDateTime expiryDate = LocalDateTime.parse(expiry);
+        supplierService.addPromotion(supplier.getId(), promotionCode, discount, expiryDate);
+        redirectAttributes.addFlashAttribute("success", "Promotion added successfully!");
         return "redirect:/supplier-dashboard";
     }
 }

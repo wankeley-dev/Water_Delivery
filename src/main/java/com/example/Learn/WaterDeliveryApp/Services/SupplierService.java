@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,22 +27,19 @@ public class SupplierService {
 
     @Transactional(readOnly = true)
     public List<Supplier> getSuppliersByLocation(String location) {
-        return supplierRepository.findAll();
+        return supplierRepository.searchByLocation(location); // Updated to use the correct query
     }
 
-    // Get total number of orders for a supplier
     @Transactional(readOnly = true)
     public int getTotalOrders(Long supplierId) {
         return orderRepository.countBySupplierId(supplierId);
     }
 
-    // Get pending deliveries for a supplier
     @Transactional(readOnly = true)
     public int getPendingDeliveries(Long supplierId) {
         return orderRepository.countBySupplierIdAndOrderStatus(supplierId, OrderStatus.PENDING);
     }
 
-    // Get recent reviews for a supplier
     @Transactional(readOnly = true)
     public List<Review> getRecentReviews(Long supplierId) {
         return reviewRepository.findTop5BySupplierIdOrderByCreatedAtDesc(supplierId);
@@ -52,7 +50,6 @@ public class SupplierService {
         return supplierRepository.findByUsers(users);
     }
 
-    // Update supplier profile
     @Transactional
     public Supplier updateSupplierProfile(Supplier supplier1, Supplier supplier, MultipartFile imageFile) {
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -67,5 +64,29 @@ public class SupplierService {
             }
         }
         return supplierRepository.save(supplier);
+    }
+
+    // ✅ New Methods
+    @Transactional
+    public Supplier toggleAvailability(Long supplierId, boolean isAvailable) {
+        Supplier supplier = supplierRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        supplier.setIsAvailable(isAvailable);
+        return supplierRepository.save(supplier);
+    }
+
+    @Transactional
+    public Supplier addPromotion(Long supplierId, String promotionCode, double discount, LocalDateTime expiry) {
+        Supplier supplier = supplierRepository.findById(supplierId)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        supplier.setPromotionCode(promotionCode);
+        supplier.setPromotionDiscount(discount);
+        supplier.setPromotionExpiry(expiry);
+        return supplierRepository.save(supplier);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Supplier> getAvailableSuppliers() {
+        return supplierRepository.findByIsAvailableTrue();
     }
 }

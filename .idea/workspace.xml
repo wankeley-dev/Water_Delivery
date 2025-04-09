@@ -1,28 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="56234bad-55f8-40e2-bde8-e3bbced39f15" name="Changes" comment="This is my first push of the scholarship portal to github">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/order-history.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/profile-edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application-mysql.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application-postgres.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/AuthController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/AuthController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/CustomerController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/HomeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/OrderController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/ReviewController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/SupplierDashboardController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Controllers/SupplierProfileController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/CustomAuthenticationSuccessHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/Order.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/OrderStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/Review.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/Supplier.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Entity/Users.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Repository/OrderRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Repository/ReviewRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Repository/SupplierRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Repository/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/SecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Services/CustomUserDetailsService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Services/OrderService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Services/ReviewService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Services/SupplierService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/Services/UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/WaterDeliveryApp.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/example/Learn/WaterDeliveryApp/WebMvcConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/customer-dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/manage-profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/order-history.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/order-success.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/order.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/profile-edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/review.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/supplier-dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/supplier-deliveries.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/supplier-order.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/supplier_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/example/Learn/WaterDeliveryApp/WaterDeliveryAppTests.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/55cae886-17b8-4dbe-a3e5-657dcf7b7c6e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/a584b08d-cdc7-4dce-b0ce-318eedc29390.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Controllers/SupplierProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/OrderStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/OrderStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Supplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Entity/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/SupplierRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/SupplierRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/SupplierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/SupplierService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/customer-dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/customer-dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/manage-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/manage-profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/order-success.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/order-success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/order_history.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/review.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/supplier-dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/supplier-dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/supplier-deliveries.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/supplier-deliveries.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/supplier-order.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/supplier-order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/supplier_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/supplier_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+    <option name="PARALLEL_COMPILATION" value="true" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -39,12 +129,13 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../KoforiduaHealthConnect" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -182,20 +273,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="This is my first push of the scholarship portal to github" />
     <option name="LAST_COMMIT_MESSAGE" value="This is my first push of the scholarship portal to github" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/Learn/WaterDeliveryApp/Repository/UserRepository.java</url>
-          <line>12</line>
-          <properties class="com.example.Learn.WaterDeliveryApp.Repository.UserRepository">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

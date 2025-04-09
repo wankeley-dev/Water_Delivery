@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaFlow - Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+        :root {
+            --primary-blue: #0077B6;
+            --light-blue: #CAF0F8;
+            --wave-blue: #90E0EF;
+            --shadow-color: rgba(0, 119, 182, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-blue), #FFFFFF);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            animation: floatIn 0.5s ease-out;
+        }
+
+        .water-icon {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid var(--light-blue);
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background: #005F8F;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2390E0EF' fill-opacity='0.6' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,208C672,213,768,203,864,181.3C960,160,1056,128,1152,133.3C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            animation: waveAnimation 10s infinite linear;
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-25%); }
+            100% { transform: translateX(0); }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                width: 90% !important;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center vh-100 login-container">
+  <div class="card p-4" style="width: 400px;">
+    <div class="text-center">
+      <span class="water-icon">💧</span>
+      <h3>AquaFlow</h3>
+      <p class="text-muted">Fresh Water, One Tap Away</p>
+    </div>
+
+    <div th:if="${param.error}" class="alert alert-danger text-center mt-3 animate__animated animate__shakeX">
+      Invalid email or password
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-success text-center mt-3 animate__animated animate__fadeIn">
+      You have been logged out
+    </div>
+
+    <form action="/perform_login" method="post">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <div class="input-group">
+          <span class="input-group-text">📧</span>
+          <input type="email" class="form-control" name="email" th:value="${param.email}" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text">🔒</span>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Sign In</button>
+      <p class="text-center mt-3">
+        New to AquaFlow?
+        <a href="/register" class="text-decoration-none" style="color: var(--primary-blue)">Create Account</a>
+      </p>
+    </form>
+  </div>
+</div>
+<div class="wave"></div>
+</body>
+</html>

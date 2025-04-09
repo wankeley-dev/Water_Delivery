@@ -11,19 +11,18 @@ import java.util.Optional;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
-    // 🔍 Find suppliers by location (case-insensitive)
+    // Existing Queries
     @Query("SELECT s.id, s.name, s.location FROM Supplier s WHERE LOWER(s.location) LIKE LOWER(CONCAT('%', :location, '%'))")
     List<Supplier> searchByLocation(@Param("location") String location);
 
-    // 🔍 Find suppliers by exact user ID
     Optional<Supplier> findByUsersId(Long usersId);
-
-    // 🔍 Find suppliers by associated user entity
     Optional<Supplier> findByUsers(Users users);
-
-    // 🔍 Find suppliers by name (case-sensitive)
     Optional<Supplier> findByName(String name);
-
-    // 🔍 Find suppliers whose names contain a given keyword (case-insensitive)
     List<Supplier> findByNameContainingIgnoreCase(String name);
+
+    // ✅ New Queries
+    List<Supplier> findByIsAvailableTrue(); // Find available suppliers
+    List<Supplier> findByDeliveryRadiusKmGreaterThanEqual(double radius); // Find suppliers with sufficient delivery range
+    List<Supplier> findByPromotionCodeNotNull(); // Find suppliers with active promotions
+
 }

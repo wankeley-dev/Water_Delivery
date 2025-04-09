@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,10 +62,18 @@ public class OrderService {
     @Transactional
     public Order placeOrder(Order order) {
         order.setOrderStatus(OrderStatus.PENDING);
+        order.setConfirmed(false); // ✅ Default to unconfirmed
 
-        // Get supplier contact details
+        // Apply promotion discount if available
         Supplier supplier = order.getSupplier();
-        String supplierPhoneNumber = supplier.getContactDetails();
+        if (supplier.getPromotionCode() != null && supplier.getPromotionExpiry() != null &&
+                supplier.getPromotionExpiry().isAfter(LocalDateTime.now())) {
+            double discount = supplier.getPromotionDiscount() / 100.0;
+            order.setTotalPrice(order.getQuantity() * order.getPricePerLitre() * (1 - discount));
+            logger.info("Applied promotion {} with {}% discount to order.", supplier.getPromotionCode(), supplier.getPromotionDiscount());
+        } else {
+            order.setTotalPrice(order.getQuantity() * order.getPricePerLitre());
+        }
 
         return orderRepository.save(order);
     }
@@ -82,5 +91,16 @@ public class OrderService {
     @Transactional(readOnly = true)
     public int countOrdersByStatus(Long supplierId, OrderStatus status) {
         return orderRepository.countBySupplierIdAndOrderStatus(supplierId, status);
+    }
+
+    // ✅ New Method: Confirm Order
+    @Transactional
+    public void confirmOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setConfirmed(true);
+        order.setOrderStatus(OrderStatus.CONFIRMED);
+        orderRepository.save(order);
+        logger.info("Order ID {} confirmed by supplier.", orderId);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -32,32 +33,26 @@ public class UserService {
     public Users registerUser(Users users) {
         logger.info("Attempting to register user with email: {}", users.getEmail());
 
-        // Check if the email is already registered
         if (userRepository.existsByEmail(users.getEmail())) {
             logger.error("Registration failed: Email {} is already in use.", users.getEmail());
             throw new IllegalStateException("Email is already in use.");
         }
 
-        // Encrypt password before saving
         users.setPassword(passwordEncoder.encode(users.getPassword()));
-
-        // Assign default role if not set
         users.setRole(Optional.ofNullable(users.getRole()).orElse(Role.CUSTOMER));
+        users.setLastLogin(LocalDateTime.now()); // ✅ Set initial login time
 
-        // Save user to database
         Users savedUsers = userRepository.save(users);
         logger.info("User registered successfully: {}", savedUsers.getEmail());
 
-        // If user is a supplier, create a corresponding supplier entry
         if (savedUsers.getRole() == Role.SUPPLIER) {
             Supplier supplier = new Supplier();
             supplier.setUsers(savedUsers);
-            supplier.setName("New Supplier");  // Default name
+            supplier.setName("New Supplier");
             supplier.setLocation("Not Set");
             supplier.setContactDetails("Not Set");
             supplier.setPricing(0.00);
             supplier.setDescription("Supplier description pending update.");
-
             supplierRepository.save(supplier);
             logger.info("Supplier profile created for user: {}", savedUsers.getEmail());
         }
@@ -68,5 +63,26 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<Users> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    // ✅ New Methods
+    @Transactional
+    public Users updatePreferences(Long userId, Long preferredSupplierId, String preferredDeliveryTime) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+        user.setPreferredSupplierId(preferredSupplierId);
+        user.setPreferredDeliveryTime(preferredDeliveryTime);
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateLastLogin(String email) {
+        Optional<Users> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            Users user = userOpt.get();
+            user.setLastLogin(LocalDateTime.now());
+            userRepository.save(user);
+            logger.info("Updated last login for user: {}", email);
+        }
     }
 }

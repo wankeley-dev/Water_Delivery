@@ -3,8 +3,10 @@ package com.example.Learn.WaterDeliveryApp.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "users") // Explicitly naming table to avoid conflicts
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +26,17 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING) // Ensures proper String-to-Enum conversion
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    // ✅ New Fields
+    @Column
+    private Long preferredSupplierId; // ID of the user's preferred supplier
+
+    @Column
+    private String preferredDeliveryTime; // e.g., "Morning", "Afternoon", "Evening"
+
+    @Column
+    private LocalDateTime lastLogin; // Tracks the last time the user logged in
 }

@@ -16,9 +16,6 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="E_Commerce" options="-parameters" />
-      <module name="LearnOne 2" options="-parameters" />
-      <module name="Scholarship_Application" options="-parameters" />
       <module name="WaterDeliveryApp" options="-parameters" />
     </option>
   </component>

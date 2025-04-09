@@ -1,5 +1,5 @@
 package com.example.Learn.WaterDeliveryApp.Entity;
 
 public enum OrderStatus {
-    PENDING, DELIVERED
+    PENDING, CONFIRMED, DELIVERED, CANCELLED // ✅ Added CONFIRMED and CANCELLED statuses
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "orders")  // ✅ Avoids SQL keyword conflict
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +27,17 @@ public class Order {
     private String deliveryAddress;
     private String waterType;
     private Long quantity;
-    private Double  pricePerLitre;
-    private Double  totalPrice;
+    private Double pricePerLitre;
+    private Double totalPrice;
 
-    @Enumerated(EnumType.STRING) // Ensures proper String-to-Enum conversion
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus orderStatus;
 
+    // ✅ New Fields
+    @Column
+    private String preferredDeliveryTime; // e.g., "Morning", "Afternoon", "Evening"
+
+    @Column
+    private boolean isConfirmed; // Tracks if the supplier has confirmed the order
 }
